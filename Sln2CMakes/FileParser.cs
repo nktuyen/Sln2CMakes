@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    internal class FileParser
+    public class FileParser
     {
         protected StreamReader _reader = null;
-        protected Model _model = null;
-        protected Model _parsingModel = null;
         protected string _filePath = string.Empty;
-
-        public Model Model { get { return _model; } }
         public string FileName { get { return _filePath; } }
         public bool Parse(string filePath)
         {
-            _model = null;
             _reader = null;
-            _parsingModel = null;
             _filePath = filePath;
             if (!PreParsing())
             {

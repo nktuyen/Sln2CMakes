@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class Project : Model
+    public class Project : NamedObject
     {
         public string Path { get; internal set; }
         public string Guid { get; internal set; }
-        public readonly List<string> IncludeDirectories = new List<string>();
-        public readonly List<string> HeaderFiles = new List<string>();
-        public readonly List<string> SourceFiles = new List<string>();
-        public readonly List<string> Files = new List<string>();
-        internal Project(string name = "")
+        public Solution Solution { get; internal set; }
+
+        internal Project(string name = ""): base(name)
         {
-            Name = name;
+            
         }
     }
 }

@@ -40,6 +40,17 @@ namespace Sln2CMakes
             return res;
         }
 
+        public string GetFileExtension(string filePath)
+        {
+            string res = string.Empty;
+            int pos = filePath.LastIndexOf('.');
+            if(pos > 0)
+            {
+                res = filePath.Substring(pos + 1);
+            }
+            return res;
+        }
+
         public string GetFileDirectory(string fullPath)
         {
             string res = fullPath;

@@ -33,9 +33,7 @@
             this.btnSolutionFileOpen = new System.Windows.Forms.Button();
             this.lvwSolutionDetails = new System.Windows.Forms.ListView();
             this.colNo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colGuid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // label1
@@ -54,14 +52,14 @@
             this.txtSolutionFileName.Location = new System.Drawing.Point(87, 13);
             this.txtSolutionFileName.Name = "txtSolutionFileName";
             this.txtSolutionFileName.ReadOnly = true;
-            this.txtSolutionFileName.Size = new System.Drawing.Size(852, 20);
+            this.txtSolutionFileName.Size = new System.Drawing.Size(724, 20);
             this.txtSolutionFileName.TabIndex = 1;
-            this.txtSolutionFileName.Text = "D:\\tinspire-opal-dsktp\\phoenix\\build\\vs\\TI-Nspire_Desktop.sln";
+            this.txtSolutionFileName.Text = "D:\\Projects\\DuplicatedFileFinder\\src\\DuplicatedFileFinder";
             // 
             // btnSolutionFileOpen
             // 
             this.btnSolutionFileOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSolutionFileOpen.Location = new System.Drawing.Point(940, 12);
+            this.btnSolutionFileOpen.Location = new System.Drawing.Point(812, 12);
             this.btnSolutionFileOpen.Name = "btnSolutionFileOpen";
             this.btnSolutionFileOpen.Size = new System.Drawing.Size(27, 23);
             this.btnSolutionFileOpen.TabIndex = 2;
@@ -76,15 +74,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvwSolutionDetails.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colNo,
-            this.colName,
-            this.colPath,
-            this.colGuid});
+            this.colPath});
             this.lvwSolutionDetails.FullRowSelect = true;
             this.lvwSolutionDetails.GridLines = true;
+            this.lvwSolutionDetails.HideSelection = false;
             this.lvwSolutionDetails.Location = new System.Drawing.Point(87, 71);
             this.lvwSolutionDetails.Name = "lvwSolutionDetails";
             this.lvwSolutionDetails.ShowItemToolTips = true;
-            this.lvwSolutionDetails.Size = new System.Drawing.Size(852, 535);
+            this.lvwSolutionDetails.Size = new System.Drawing.Size(724, 368);
             this.lvwSolutionDetails.TabIndex = 3;
             this.lvwSolutionDetails.UseCompatibleStateImageBehavior = false;
             this.lvwSolutionDetails.View = System.Windows.Forms.View.Details;
@@ -94,26 +91,16 @@
             this.colNo.Text = "#";
             this.colNo.Width = 40;
             // 
-            // colName
-            // 
-            this.colName.Text = "Name";
-            this.colName.Width = 120;
-            // 
             // colPath
             // 
             this.colPath.Text = "FullName";
-            this.colPath.Width = 240;
-            // 
-            // colGuid
-            // 
-            this.colGuid.Text = "Guid";
-            this.colGuid.Width = 120;
+            this.colPath.Width = 480;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(972, 637);
+            this.ClientSize = new System.Drawing.Size(844, 470);
             this.Controls.Add(this.lvwSolutionDetails);
             this.Controls.Add(this.btnSolutionFileOpen);
             this.Controls.Add(this.txtSolutionFileName);
@@ -133,9 +120,7 @@
         private System.Windows.Forms.Button btnSolutionFileOpen;
         private System.Windows.Forms.ListView lvwSolutionDetails;
         private System.Windows.Forms.ColumnHeader colNo;
-        private System.Windows.Forms.ColumnHeader colName;
         private System.Windows.Forms.ColumnHeader colPath;
-        private System.Windows.Forms.ColumnHeader colGuid;
     }
 }
 

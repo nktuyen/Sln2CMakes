@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class Solution : Model
+    public class Solution : NamedObject
     {
         public Version Version { get; internal set; }
         public readonly List<Project> Projects = new List<Project>();
-        internal Solution(string name = "")
+        internal Solution(string name = "") : base(name)
         {
-            Name = name;
             Projects.Clear();
         }
     }

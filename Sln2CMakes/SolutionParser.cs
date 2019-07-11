@@ -12,8 +12,9 @@ namespace Sln2CMakes
     {
         private Dictionary<string, ProjectInfo> _lstProjects = new Dictionary<string, ProjectInfo>();
         private ProjectInfo _currentPrjInfo = null;
+        private Solution _solution = null;
 
-        public Solution Solution { get { return _model as Solution; } }
+        public Solution Solution { get; internal set; }
         internal SolutionParser()
         {
 
@@ -25,21 +26,21 @@ namespace Sln2CMakes
 
             string remaining = string.Empty;
             int position = -1;
-            if (null != Model)
+            if (null != Solution)
             {
                 return false;   //Stop parsing
             }
 
             if (IsFileFormatLine(lineContent))
             {
-                if(_parsingModel != null)
+                if(_solution != null)
                 {
                     return false;   //Stop parsing
                 }
 
                 Solution slnModel = new Solution(Utilities.Instance.GetFileTitle(FileName));
                 //slnModel.Version = new Version(12, 0);
-                _parsingModel = slnModel;
+                _solution = slnModel;
             }
             else if(IsStartProjectLine(lineContent))
             {
@@ -65,6 +66,7 @@ namespace Sln2CMakes
                         prjRelPath = Utilities.Instance.UnescapeString(prjRelPath);
                         _currentPrjInfo.RelPath = prjRelPath;
                         _currentPrjInfo.AbsPath = Utilities.Instance.GetFileDirectory(FileName) + "\\" + prjRelPath;
+                        _currentPrjInfo.FileExt = Utilities.Instance.GetFileExtension(prjRelPath);
                     }
 
                     if (prjInfos.Length > 2)
@@ -95,21 +97,39 @@ namespace Sln2CMakes
 
         protected override void PostParsing()
         {
-            if(_parsingModel != null)
+            if(_solution != null)
             {
-                _parsingModel.Validate();
-                if (_parsingModel.IsValid)
+                //TODO: _solution.Validate();
                 {
-                    _model = _parsingModel;
-                    Solution slnModel = _model as Solution;
+                    Solution = _solution;
                     if (_lstProjects.Count > 0)
                     {
                         foreach(ProjectInfo prj in _lstProjects.Values)
                         {
-                            ProjectParser prjParser = new ProjectParser(prj.Name);
-                            if ((prjParser.Parse(prj.AbsPath)) && (prjParser.Model!=null))
+                            ProjectParser prjParser = null;
+                            if(string.Compare("csproj", prj.FileExt, true) == 0)
                             {
-                                slnModel.Projects.Add(prjParser.Model as Project);
+
+                            }
+                            else if (string.Compare("vbproj", prj.FileExt, true) == 0)
+                            {
+
+                            }
+                            else if (string.Compare("vcproj", prj.FileExt, true) == 0)
+                            {
+
+                            }
+                            else if (string.Compare("vcxproj", prj.FileExt, true) == 0)
+                            {
+                                prjParser = new VcxProjectParser(prj.Name);
+                            }
+
+                            if (null != prjParser)
+                            {
+                                if ((prjParser.Parse(prj.AbsPath)) && (prjParser.Project != null))
+                                {
+                                    Solution.Projects.Add(prjParser.Project);
+                                }
                             }
                         }
                     }

@@ -31,18 +31,15 @@ namespace Sln2CMakes
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
 
+            txtSolutionFileName.Text = dlg.FileName;
             lvwSolutionDetails.Items.Clear();
             SolutionParser slnParser = new SolutionParser();
             if (slnParser.Parse(txtSolutionFileName.Text))
             {
-                int grpIndex = -1;
                 foreach(Project prj in slnParser.Solution.Projects)
                 {
                     ListViewGroup group = lvwSolutionDetails.Groups.Add(prj.Name, prj.Name);
-                    foreach (string filePath in prj.Files)
-                    {
-                        group.Items.Add(lv);
-                    }
+                    
                 }
             }
             else

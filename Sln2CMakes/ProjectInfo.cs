@@ -12,5 +12,6 @@ namespace Sln2CMakes
         internal string Guide { get; set; }
         internal string RelPath { get; set; }
         internal string AbsPath { get; set; }
+        internal string FileExt { get; set; }
     }
 }
