@@ -8,7 +8,7 @@ namespace Sln2CMakes
 {
     public abstract class NamedObject
     {
-        public string Name { get; protected set; }
+        public string Name { get; internal set; }
 
         internal NamedObject(string name = "")
         {

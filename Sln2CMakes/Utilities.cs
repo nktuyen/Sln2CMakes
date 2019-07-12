@@ -32,6 +32,11 @@ namespace Sln2CMakes
             {
                 fi = new FileInfo(fullPath);
                 res = fi.Name;
+                int pos = res.LastIndexOf('.');
+                if (pos >= 0)
+                {
+                    res = res.Substring(0, pos);
+                }
             }
             catch(Exception ex)
             {
@@ -67,17 +72,32 @@ namespace Sln2CMakes
             return res;
         }
 
-        public string UnescapeString(string input)
+        public string GetFileName(string fullName)
+        {
+            string res = fullName;
+            FileInfo fi = null;
+            try
+            {
+                fi = new FileInfo(fullName);
+                res = fi.Name;
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+            }
+            return res;
+        }
+        public string UnescapeString(string input, string escc = "\"")
         {
             int start = 0;
             int len = input.Length;
-            if (input.Substring(0, 1) == "\"")
+            if (input.Substring(0, 1) == escc)
             {
                 start++;
                 len--;
             }
 
-            if (input.Substring(input.Length - 1, 1) == "\"")
+            if (input.Substring(input.Length - 1, 1) == escc)
             {
                 len--;
             }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class VcProjectParser : ProjectParser
+    class VcProjectParser : ProjectParser
     {
-        internal VcProjectParser(string prjName = ""): base(prjName)
+        internal VcProjectParser(string prjName = "", string prjGuid = "") : base(prjName, prjGuid)
         {
 
         }

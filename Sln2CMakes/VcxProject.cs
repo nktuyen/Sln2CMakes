@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class VcxProject : VcProject
+    class VcxProject : VcProject
     {
-        internal VcxProject(string name = "") : base(name)
+        internal VcxProject(string name = "", string guid = "") : base(name, guid)
         {
             
         }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    class ProjectItem : File
+    class CodeFile : ProjectItem
     {
-        internal ProjectItem(string name = "") : base(name)
+        internal CodeFile(string name = ""): base(name)
         {
-            
+
         }
     }
 }

@@ -6,13 +6,30 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class Solution : NamedObject
+    class Solution : File
     {
         public Version Version { get; internal set; }
+        public string Path { get; internal set; }
         public readonly List<Project> Projects = new List<Project>();
+        public Dictionary<string,string> EnvironmentVariables { get; }
         internal Solution(string name = "") : base(name)
         {
             Projects.Clear();
+            EnvironmentVariables = new Dictionary<string, string>();
+            EnvironmentVariables.Add("$(SolutionDir)", string.Empty);
+            EnvironmentVariables.Add("$(SolutionFileName)", string.Empty);
+            EnvironmentVariables.Add("$(SolutionName)", string.Empty);
+            EnvironmentVariables.Add("$(SolutionPath)", string.Empty);
+            EnvironmentVariables.Add("$(SolutionExt)", string.Empty);
+        }
+
+        internal void UpdateEnavironmentVariables()
+        {
+            EnvironmentVariables["$(SolutionDir)"] = Utilities.Instance.GetFileDirectory(Path);
+            EnvironmentVariables["$(SolutionFileName)"] = Utilities.Instance.GetFileName(Path);
+            EnvironmentVariables["$(SolutionName)"] = Name;
+            EnvironmentVariables["$(SolutionPath)"] = Path;
+            EnvironmentVariables["$(SolutionExt)"] = Utilities.Instance.GetFileExtension(Path);
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Sln2CMakes
 
                 Solution slnModel = new Solution(Utilities.Instance.GetFileTitle(FileName));
                 //slnModel.Version = new Version(12, 0);
+                slnModel.Path = FileName;
                 _solution = slnModel;
             }
             else if(IsStartProjectLine(lineContent))
@@ -101,6 +102,7 @@ namespace Sln2CMakes
             {
                 //TODO: _solution.Validate();
                 {
+                    _solution.UpdateEnavironmentVariables();
                     Solution = _solution;
                     if (_lstProjects.Count > 0)
                     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class ProjectItemGroup : List<ProjectItem>
+    class ProjectItemGroup : List<ProjectItem>
     {
         internal ProjectItemGroup()
         {

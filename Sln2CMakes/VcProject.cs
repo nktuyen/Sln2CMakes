@@ -6,11 +6,50 @@ using System.Threading.Tasks;
 
 namespace Sln2CMakes
 {
-    public class VcProject : Project
+    public enum ConfigurationType
     {
-        internal VcProject(string name = ""): base(name)
+        Unknow = 0,
+        Application,
+        StaticLibrary,
+        DynamicLibrary,
+        Makefile,
+    };
+
+    class VcProject : Project
+    {
+        #region Per configuration properties
+        internal Dictionary<string, ConfigurationType> ConfigurationTypes { get; set; }
+        internal Dictionary<string, List<string>> ConfigurationDefinitions { get; set; }
+        #endregion
+        public List<Configuration> ConfigurationItems { get; internal set; }
+        public List<SourceFile> SourceFileItems { get; internal set; }
+        public List<HeaderFile> HeaderFileItems { get; internal set; }
+        public ConfigurationType ConfigurationType
         {
-            
+            get
+            {
+                foreach(Configuration config in ConfigurationItems)
+                {
+                    if (config.IsActivate)
+                    {
+                        if (ConfigurationTypes.ContainsKey(config.Name))
+                        {
+                            ConfigurationType configType = ConfigurationTypes[config.Name];
+                            return configType;
+                        }
+                    }
+                }
+
+                return ConfigurationType.Unknow;
+            }
+        }
+        internal VcProject(string name = "", string guid = ""): base(name, guid)
+        {
+            ConfigurationItems = new List<Configuration>();
+            HeaderFileItems = new List<HeaderFile>();
+            SourceFileItems = new List<SourceFile>();
+            ConfigurationTypes = new Dictionary<string, ConfigurationType>();
+            ConfigurationDefinitions = new Dictionary<string, List<string>>();
         }
     }
 }
