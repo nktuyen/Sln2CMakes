@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class SourceFile : CodeFile
+    public class VcxProject : VcProject
     {
-        internal SourceFile(string name = ""): base(name)
+        internal VcxProject(string name = "", string guid = "") : base(name, guid)
         {
-
+            
         }
     }
 }

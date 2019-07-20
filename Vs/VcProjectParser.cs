@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
     class VcProjectParser : ProjectParser
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class File : NamedObject
+    public class File : NamedObject
     {
         public string AbsolutePath { get; internal set; }
         public string RelativePath { get; internal set; }

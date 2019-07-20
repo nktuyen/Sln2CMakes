@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class VcxProject : VcProject
+    class ProjectItemGroup : List<ProjectItem>
     {
-        internal VcxProject(string name = "", string guid = "") : base(name, guid)
+        internal ProjectItemGroup()
         {
-            
+
         }
     }
 }

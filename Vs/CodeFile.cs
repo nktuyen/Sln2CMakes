@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class ProjectItemGroup : List<ProjectItem>
+    public class CodeFile : ProjectItem
     {
-        internal ProjectItemGroup()
+        internal CodeFile(string name = ""): base(name)
         {
 
         }

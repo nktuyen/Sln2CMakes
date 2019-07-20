@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
     public enum ConfigurationType
     {
@@ -15,7 +15,7 @@ namespace Sln2CMakes
         Makefile,
     };
 
-    class VcProject : Project
+    public class VcProject : Project
     {
         #region Per configuration properties
         internal Dictionary<string, ConfigurationType> ConfigurationTypes { get; set; }

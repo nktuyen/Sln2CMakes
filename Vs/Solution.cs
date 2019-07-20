@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class Solution : File
+    public class Solution : File
     {
         public Version Version { get; internal set; }
         public string Path { get; internal set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Sln2CMakes
+namespace Vs
 {
     class ProjectParser : FileParser
     {

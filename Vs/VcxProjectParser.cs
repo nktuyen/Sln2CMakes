@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Sln2CMakes
+namespace Vs
 {
     class VcxProjectParser : VcProjectParser
     {

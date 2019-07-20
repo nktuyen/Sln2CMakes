@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class ProjectItem : File
+    public class ProjectItem : File
     {
         internal ProjectItem(string name = "") : base(name)
         {

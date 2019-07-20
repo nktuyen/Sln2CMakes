@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    class CodeFile : ProjectItem
+    public class HeaderFile : CodeFile
     {
-        internal CodeFile(string name = ""): base(name)
+        internal HeaderFile(string name = ""): base(name)
         {
 
         }

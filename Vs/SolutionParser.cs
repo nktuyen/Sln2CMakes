@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-namespace Sln2CMakes
+namespace Vs
 {
-    internal class SolutionParser : FileParser
+    public class SolutionParser : FileParser
     {
         private Dictionary<string, ProjectInfo> _lstProjects = new Dictionary<string, ProjectInfo>();
         private ProjectInfo _currentPrjInfo = null;
         private Solution _solution = null;
 
         public Solution Solution { get; internal set; }
-        internal SolutionParser()
+        public SolutionParser()
         {
 
         }
