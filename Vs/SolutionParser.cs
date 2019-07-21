@@ -39,13 +39,33 @@ namespace Vs
                 }
 
                 Solution slnModel = new Solution(Utilities.Instance.GetFileTitle(FileName));
-                //slnModel.Version = new Version(12, 0);
+                string versionString = lineContent.Substring(@"Microsoft Visual Studio Solution File, Format Version".Length + 1).Trim();
+                string[] versions = versionString.Split('.');
+                int major = 0;
+                int minor = 0;
+
+                if (versions.Length > 0)
+                {
+                    if(!int.TryParse(versions[0], out major))
+                    {
+                        major = 9;
+                    }
+                }
+                if (versions.Length > 1)
+                {
+                    if(!int.TryParse(versions[1], out minor))
+                    {
+                        minor = 0;
+                    }
+                }
+
+                slnModel.Version = new Version(major, minor);
                 slnModel.Path = FileName;
                 _solution = slnModel;
             }
             else if(IsStartProjectLine(lineContent))
             {
-                position = lineContent.IndexOf("=");
+                position = lineContent.IndexOf(" = ");
                 if(position > 0)
                 {
                     remaining = lineContent.Substring(position + 1);
@@ -102,7 +122,7 @@ namespace Vs
             {
                 //TODO: _solution.Validate();
                 {
-                    _solution.UpdateEnavironmentVariables();
+                    _solution.UpdateEnvironmentVariables();
                     Solution = _solution;
                     if (_lstProjects.Count > 0)
                     {

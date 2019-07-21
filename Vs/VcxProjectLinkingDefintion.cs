@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vs
 {
-    class ProjectItemGroup : List<ProjectItem>
+    public class VcxProjectLinkingDefintion : VcProjectLinkingDefintion
     {
-        internal ProjectItemGroup()
+        internal VcxProjectLinkingDefintion(): base()
         {
 
         }

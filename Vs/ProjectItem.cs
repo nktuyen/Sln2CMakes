@@ -8,9 +8,15 @@ namespace Vs
 {
     public class ProjectItem : File
     {
+        public ProjectItem Parent { get; internal set; }
         internal ProjectItem(string name = "") : base(name)
         {
             
+        }
+
+        internal virtual void UpdateEnvironmentVariables()
+        {
+
         }
     }
 }

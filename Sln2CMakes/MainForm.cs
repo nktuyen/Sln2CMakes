@@ -26,12 +26,14 @@ namespace Sln2CMakes
                 foreach (Vs.HeaderFile hdr in vcxProj.HeaderFileItems)
                 {
                     TreeNode headerNode = parentNode.Nodes.Add(hdr.Name);
+                    headerNode.Checked = true;
                     headerNode.Tag = hdr;
                 }
                 foreach (Vs.SourceFile src in vcxProj.SourceFileItems)
                 {
                     TreeNode sourceNode = parentNode.Nodes.Add(src.Name);
                     sourceNode.Tag = src;
+                    sourceNode.Checked = true;
                 }
             }
         }
@@ -56,6 +58,7 @@ namespace Sln2CMakes
                 foreach (Vs.Project prj in slnParser.Solution.Projects)
                 {
                     TreeNode prjNode = slnNode.Nodes.Add(prj.Name);
+                    prjNode.Checked = true;
                     prjNode.Tag = prj;
                     InsertProjectItemNode(prj, prjNode);
                 }
@@ -78,10 +81,20 @@ namespace Sln2CMakes
             if (null == obj)
                 return;
 
-            if (obj is Vs.VcxProject)
+            if(obj is Vs.Solution)
+            {
+                Vs.Solution solution = tvwProjectTree.SelectedNode.Tag as Vs.Solution;
+                ListViewItem item = lvwItemDetail.Items.Add("Version");
+                item.SubItems.Add(solution.Version.ToString());
+
+                item = lvwItemDetail.Items.Add("Path");
+                item.SubItems.Add(solution.Path);
+                
+            }
+            else if (obj is Vs.VcxProject)
             {
                 Vs.VcxProject vcxProj = obj as Vs.VcxProject;
-                foreach (Vs.Configuration config in vcxProj.ConfigurationItems)
+                foreach (Vs.VcProjectConfigurationItem config in vcxProj.ConfigurationItems)
                 {
                     cbbProjectConfigs.Items.Add(config);
                 }

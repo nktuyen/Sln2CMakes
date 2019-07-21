@@ -11,7 +11,7 @@ namespace Vs
         public Version Version { get; internal set; }
         public string Path { get; internal set; }
         public readonly List<Project> Projects = new List<Project>();
-        public Dictionary<string,string> EnvironmentVariables { get; }
+        internal Dictionary<string,string> EnvironmentVariables { get; }
         internal Solution(string name = "") : base(name)
         {
             Projects.Clear();
@@ -23,13 +23,18 @@ namespace Vs
             EnvironmentVariables.Add("$(SolutionExt)", string.Empty);
         }
 
-        internal void UpdateEnavironmentVariables()
+        internal void UpdateEnvironmentVariables()
         {
             EnvironmentVariables["$(SolutionDir)"] = Utilities.Instance.GetFileDirectory(Path);
             EnvironmentVariables["$(SolutionFileName)"] = Utilities.Instance.GetFileName(Path);
             EnvironmentVariables["$(SolutionName)"] = Name;
             EnvironmentVariables["$(SolutionPath)"] = Path;
             EnvironmentVariables["$(SolutionExt)"] = Utilities.Instance.GetFileExtension(Path);
+
+            foreach (Project project in Projects)
+            {
+                project.UpdateEnvironmentVariables();
+            }
         }
     }
 }

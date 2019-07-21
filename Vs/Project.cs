@@ -23,7 +23,7 @@ namespace Vs
             EnvironmentVariables.Add("$(ProjectPath)", string.Empty);
         }
 
-        internal void UpdateEnvironmentVariables()
+        internal virtual void UpdateEnvironmentVariables()
         {
             EnvironmentVariables["$(ProjectDir)"] = Utilities.Instance.GetFileDirectory(AbsolutePath);
             EnvironmentVariables["$(ProjectName)"] = Name;

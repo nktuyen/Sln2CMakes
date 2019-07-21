@@ -62,7 +62,7 @@ namespace Vs
             {
                 if (string.Compare("ItemGroup", node.Name, true) == 0)
                 {
-                    foreach(XmlNode child in node.ChildNodes)
+                    foreach (XmlNode child in node.ChildNodes)
                     {
                         if (string.Compare(child.Name, "ProjectConfiguration", true) == 0)
                         {
@@ -72,11 +72,27 @@ namespace Vs
                                 nameAtr = child.Attributes["Include"];
                                 if (null != nameAtr)
                                 {
-                                    Configuration prjConfItem = new Configuration(nameAtr.Value);
-                                    vcxProj.ConfigurationItems.Add(prjConfItem);
+                                    VcProjectConfigurationItem prjConfItem = vcxProj.FindConfiguration(nameAtr.Value);
+                                    if (null == prjConfItem)
+                                    {
+                                        prjConfItem = new VcProjectConfigurationItem(nameAtr.Value);
+                                        vcxProj.ConfigurationItems.Add(prjConfItem);
+                                    }
+
+                                    foreach (XmlNode xmlNode in child.ChildNodes)
+                                    {
+                                        if (string.Compare(xmlNode.Name, "Configuration", true) == 0)
+                                        {
+                                            prjConfItem.Configuration = xmlNode.InnerText;
+                                        }
+                                        else if (string.Compare(xmlNode.Name, "Platform", true) == 0)
+                                        {
+                                            prjConfItem.Platform = xmlNode.InnerText;
+                                        }
+                                    }
                                 }
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 Debug.Print(ex.Message);
                             }
@@ -87,7 +103,7 @@ namespace Vs
                             try
                             {
                                 pathAttr = child.Attributes["Include"];
-                                if(null != pathAttr)
+                                if (null != pathAttr)
                                 {
                                     string dirPath = Utilities.Instance.GetFileDirectory(TempProject.AbsolutePath);
                                     string asbFilePath = Path.GetFullPath(dirPath + "\\" + pathAttr.Value);
@@ -97,7 +113,7 @@ namespace Vs
                                     vcxProj.HeaderFileItems.Add(hdrFile);
                                 }
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 Debug.Print(ex.Message);
                             }
@@ -152,17 +168,17 @@ namespace Vs
                     {
                         labelAttr = node.Attributes["Label"];
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.Print(ex.Message);
                     }
                     if (null != labelAttr)
                     {
-                        if(string.Compare("Globals", labelAttr.Value, true) == 0)
+                        if (string.Compare("Globals", labelAttr.Value, true) == 0)
                         {
-                            foreach(XmlNode globalNode in node.ChildNodes)
+                            foreach (XmlNode globalNode in node.ChildNodes)
                             {
-                                if(string.Compare("ProjectGuid", globalNode.Name, true) == 0)
+                                if (string.Compare("ProjectGuid", globalNode.Name, true) == 0)
                                 {
                                     vcxProj.Guid = globalNode.InnerText;
                                 }
@@ -191,7 +207,7 @@ namespace Vs
                             {
                                 condAttr = node.Attributes["Condition"];
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 Debug.Print(ex.Message);
                             }
@@ -202,23 +218,54 @@ namespace Vs
                                 if (condParams.Length > 2)
                                 {
                                     string condName = Utilities.Instance.UnescapeString(condParams[2], "'");
-                                    foreach(XmlNode propNode in node.ChildNodes)
+                                    VcxProjectConfigurationItem configItem = vcxProj.FindConfiguration(condName) as VcxProjectConfigurationItem;
+                                    if (null == configItem)
+                                    {
+                                        configItem = new VcxProjectConfigurationItem(condName);
+                                        vcxProj.ConfigurationItems.Add(configItem);
+                                    }
+                                    VcProjectPropertyGroup propertyGroup = configItem.ProjectPropertyGroup;
+                                    if(null== propertyGroup)
+                                    {
+                                        propertyGroup = new VcProjectPropertyGroup(configItem.Name);
+                                        configItem.ProjectPropertyGroup = propertyGroup;
+                                    }
+                                    foreach (XmlNode propNode in node.ChildNodes)
                                     {
                                         if (string.Compare("ConfigurationType", propNode.Name, true) == 0)
                                         {
-
+                                            if (string.Compare("Application", propNode.Value, true) == 0)
+                                            {
+                                                propertyGroup.ConfigurationType =  ProjectConfigurationType.Application;
+                                            }
+                                            else if (string.Compare("StaticLibrary", propNode.Value, true) == 0)
+                                            {
+                                                propertyGroup.ConfigurationType = ProjectConfigurationType.StaticLibrary;
+                                            }
+                                            else if (string.Compare("DynamicLibrary", propNode.Value, true) == 0)
+                                            {
+                                                propertyGroup.ConfigurationType = ProjectConfigurationType.DynamicLibrary;
+                                            }
+                                            else if (string.Compare("Makefile", propNode.Value, true) == 0)
+                                            {
+                                                propertyGroup.ConfigurationType = ProjectConfigurationType.Makefile;
+                                            }
+                                            else
+                                            {
+                                                propertyGroup.ConfigurationType = ProjectConfigurationType.Unknow;
+                                            }
                                         }
                                         else if (string.Compare("OutDir", propNode.Name, true) == 0)
                                         {
-
+                                            propertyGroup.OutDir = propNode.Value;
                                         }
                                         else if (string.Compare("TargetName", propNode.Name, true) == 0)
                                         {
-
+                                            propertyGroup.TargetName = propNode.Value;
                                         }
-                                        else
+                                        else if (string.Compare("IntDir", propNode.Name, true) == 0)
                                         {
-
+                                            propertyGroup.IntDir = propNode.Value;
                                         }
                                     }
                                 }
@@ -232,7 +279,76 @@ namespace Vs
                 }
                 else if (string.Compare("ItemDefinitionGroup", node.Name, true) == 0)
                 {
+                    XmlAttribute condAttr = null;
+                    try
+                    {
+                        condAttr = node.Attributes["Condition"];
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Print(ex.Message);
+                    }
+                    if (null != condAttr)
+                    {
+                        string condName = condAttr.Value;
+                        VcxProjectConfigurationItem configItem = vcxProj.FindConfiguration(condName) as VcxProjectConfigurationItem;
+                        if(null == configItem)
+                        {
+                            configItem = new VcxProjectConfigurationItem(condName);
+                            vcxProj.ConfigurationItems.Add(configItem);
+                        }
+                        VcxProjectItemDefinitionGroup itemDefGroup = configItem.ProjectItemDefinitionGroup as VcxProjectItemDefinitionGroup;
+                        if(null == itemDefGroup)
+                        {
+                            itemDefGroup = new VcxProjectItemDefinitionGroup(condName);
+                            configItem.ProjectItemDefinitionGroup = itemDefGroup;
+                        }
+                        foreach (XmlNode itemDefNode in node.ChildNodes)
+                        {
+                            if (string.Compare("ClCompile", itemDefNode.Name, true) == 0)
+                            {
+                                VcxProjectCompilationDefintion complDefintion = itemDefGroup.Compilation as VcxProjectCompilationDefintion;
+                                if (null == complDefintion)
+                                {
+                                    complDefintion = new VcxProjectCompilationDefintion();
+                                    itemDefGroup.Compilation = complDefintion;
+                                }
 
+                                foreach(XmlNode complNode in itemDefNode)
+                                {
+                                    if (string.Compare("PreprocessorDefinitions", complNode.Name, true) == 0)
+                                    {
+                                        complDefintion.SetPreprocessors(complNode.InnerText);
+                                    }
+                                    else if (string.Compare("AdditionalIncludeDirectories", complNode.Name, true) == 0)
+                                    {
+                                        complDefintion.SetIncludeDirectories(complNode.InnerText);
+                                    }
+                                }
+                            }
+                            else if (string.Compare("Link", itemDefNode.Name, true) == 0)
+                            {
+                                VcxProjectLinkingDefintion linkingDefintion = itemDefGroup.Linking as VcxProjectLinkingDefintion;
+                                if(null == linkingDefintion)
+                                {
+                                    linkingDefintion = new VcxProjectLinkingDefintion();
+                                    itemDefGroup.Linking = linkingDefintion;
+                                }
+
+                                foreach(XmlNode linkNode in itemDefNode)
+                                {
+                                    if (string.Compare("AdditionalDependencies", linkNode.Name, true) == 0)
+                                    {
+                                        linkingDefintion.SetLibraries(linkNode.InnerText);
+                                    }
+                                    else if (string.Compare("OutputFile", linkNode.Name, true) == 0)
+                                    {
+                                        linkingDefintion.OutputFile = linkNode.InnerText;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 else if (string.Compare("ProjectExtensions", node.Name, true) == 0)
                 {
@@ -241,18 +357,17 @@ namespace Vs
                 else if (string.Compare("Import", node.Name, true) == 0)
                 {
 
+
                 }
                 else
                 {
-                    
+
                 }
             }
 
             //Completed
-            //TODO: if (vcxProj.IsValid)
             if(null != vcxProj)
             {
-                vcxProj.UpdateEnvironmentVariables();
                 Project = vcxProj;
             }
         }

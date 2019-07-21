@@ -14,18 +14,16 @@ namespace Vs
         ProjectItemGroup,
         ProjectItem
     }
-    public class Model
+    public class Model : NamedObject
     {
         private readonly ModelTypes _kind = ModelTypes.Unknown;
         public Model Parent { get; internal set; }
-        public string Name { get; internal set; }
         public ModelTypes Kind { get { return _kind; } }
         public bool IsValid { get; protected set; }
 
-        internal Model(ModelTypes kind, string name = "")
+        internal Model(ModelTypes kind, string name = "") : base(name)
         {
             _kind = kind;
-            Name = name;
         }
 
         internal virtual void Validate() { IsValid = true; }
