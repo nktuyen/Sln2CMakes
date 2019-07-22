@@ -10,6 +10,7 @@ namespace Vs
     {
         internal string Name { get; set; }
         internal string Guide { get; set; }
+        internal string Kind { get; set; }
         internal string RelPath { get; set; }
         internal string AbsPath { get; set; }
         internal string FileExt { get; set; }

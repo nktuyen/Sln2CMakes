@@ -68,7 +68,7 @@ namespace Vs
                 position = lineContent.IndexOf(" = ");
                 if(position > 0)
                 {
-                    remaining = lineContent.Substring(position + 1);
+                    remaining = lineContent.Substring(position + " = ".Length+1);
                     remaining = remaining.Trim();
                     string[] prjInfos = remaining.Split(',');
                     if(prjInfos.Length > 0)
@@ -97,6 +97,15 @@ namespace Vs
                         prjGuide = Utilities.Instance.UnescapeString(prjGuide);
                         _currentPrjInfo.Guide = prjGuide;
                     }
+
+                    string head = lineContent.Substring(0, position - 1).Trim();
+                    int guidStart = head.IndexOf("{");
+                    int guidEnd = head.IndexOf("}", guidStart);
+                    if((guidStart!=-1) && (guidEnd!=-1) && (guidStart != guidEnd)) { }
+                    {
+                        string prjKind = head.Substring(guidStart, guidEnd - guidStart + 1);
+                        _currentPrjInfo.Kind = prjKind;
+                    }
                 }
             }
             else if (IsEndProjectLine(lineContent))
@@ -122,7 +131,6 @@ namespace Vs
             {
                 //TODO: _solution.Validate();
                 {
-                    _solution.UpdateEnvironmentVariables();
                     Solution = _solution;
                     if (_lstProjects.Count > 0)
                     {
@@ -143,17 +151,64 @@ namespace Vs
                             }
                             else if (string.Compare("vcxproj", prj.FileExt, true) == 0)
                             {
-                                prjParser = new VcxProjectParser(prj.Name);
+                                prjParser = new VcxProjectParser(prj.Name, prj.Guide);
                             }
 
                             if (null != prjParser)
                             {
                                 if ((prjParser.Parse(prj.AbsPath)) && (prjParser.Project != null))
                                 {
+                                    prjParser.Project.Solution = Solution;
                                     Solution.Projects.Add(prjParser.Project);
                                 }
                             }
                         }
+                    }
+                    Solution.UpdateEnvironmentVariables();
+
+                    foreach(Project project in Solution.Projects)
+                    {
+                        if (project is VcxProject)
+                        {
+                            VcxProject vcxProject = project as VcxProject;
+                            foreach (VcxProjectConfigurationItem configurationItem in vcxProject.ConfigurationItems)
+                            {
+                                VcxProjectImportGroup importGroup = configurationItem.ProjectImportGroup as VcxProjectImportGroup;
+                                if (importGroup != null)
+                                {
+                                    foreach (string importFile in importGroup.Items)
+                                    {
+                                        VcxProjectParser parser = new VcxProjectParser(vcxProject.Name);
+                                        parser.CurrentConfiguration = configurationItem;
+                                        if (parser.Parse(importFile))
+                                        {
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (project is VcProject)
+                        {
+                            VcProject vcProject = project as VcProject;
+                            foreach(VcProjectConfigurationItem configurationItem in vcProject.ConfigurationItems)
+                            {
+                                VcProjectImportGroup importGroup = configurationItem.ProjectImportGroup;
+                                if (importGroup != null)
+                                {
+                                    foreach(string importFile in importGroup.Items)
+                                    {
+                                        VcProjectParser parser = new VcProjectParser(vcProject.Name);
+                                        parser.CurrentConfiguration = configurationItem;
+                                        if (parser.Parse(importFile))
+                                        {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        project.UpdateEnvironmentVariables();
                     }
                 }
             }

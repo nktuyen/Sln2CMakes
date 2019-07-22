@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vs
 {
-    public class CodeFile : File
+    internal class VcxProjectImportGroup : VcProjectImportGroup
     {
-        internal CodeFile(string name = ""): base(name)
+        internal VcxProjectImportGroup(string name = ""): base(name)
         {
 
         }

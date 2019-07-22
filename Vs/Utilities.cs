@@ -56,7 +56,7 @@ namespace Vs
             return res;
         }
 
-        public string GetFileDirectory(string fullPath)
+        public string GetFileDirectory(string fullPath, bool backslashatend = false)
         {
             string res = fullPath;
             FileInfo fi = null;
@@ -68,6 +68,14 @@ namespace Vs
             catch (Exception ex)
             {
                 Debug.Print(ex.Message);
+            }
+            if (backslashatend)
+            {
+                string last = res.Substring(res.Length - 1, 1);
+                if (last != "\\")
+                {
+                    res += "\\";
+                }
             }
             return res;
         }

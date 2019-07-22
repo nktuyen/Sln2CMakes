@@ -52,6 +52,7 @@
     <Compile Include="VcProjectCompilationDefintion.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectItem.cs" />
+    <Compile Include="VcProjectImportGroup.cs" />
     <Compile Include="VcProjectItemDefinitionGroup.cs" />
     <Compile Include="ProjectParser.cs" />
     <Compile Include="ProjectPropertyDefintion.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="VcxProject.cs" />
     <Compile Include="VcxProjectCompilationDefintion.cs" />
     <Compile Include="VcxProjectConfigurationItem.cs" />
+    <Compile Include="VcxProjectImportGroup.cs" />
     <Compile Include="VcxProjectItemDefinitionGroup.cs" />
     <Compile Include="VcxProjectLinkingDefintion.cs" />
     <Compile Include="VcxProjectParser.cs" />

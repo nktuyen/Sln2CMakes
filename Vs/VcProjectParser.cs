@@ -8,9 +8,13 @@ namespace Vs
 {
     class VcProjectParser : ProjectParser
     {
-        internal VcProjectParser(string prjName = "", string prjGuid = "") : base(prjName, prjGuid)
+        protected readonly string _prjName = string.Empty;
+        protected readonly string _prjGuid = string.Empty;
+        internal VcProjectConfigurationItem CurrentConfiguration { get; set; }
+        internal VcProjectParser(string prjName = "", string prjGuid = "")
         {
-
+            _prjName = prjName;
+            _prjGuid = prjGuid;
         }
-    }
+}
 }

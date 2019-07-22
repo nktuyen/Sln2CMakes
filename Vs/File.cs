@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vs
 {
-    public class File : NamedObject
+    public class File : ProjectItem
     {
         public string AbsolutePath { get; internal set; }
         public string RelativePath { get; internal set; }

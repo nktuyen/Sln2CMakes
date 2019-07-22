@@ -14,5 +14,19 @@ namespace Vs
         {
 
         }
+
+        internal override void UpdateEnvironmentVariables()
+        {
+            base.UpdateEnvironmentVariables();
+
+            if (null != Compilation)
+            {
+                Compilation.UpdateEnvironmentVariables();
+            }
+            if (null != Linking)
+            {
+                Linking.UpdateEnvironmentVariables();
+            }
+        }
     }
 }
